@@ -1,0 +1,72 @@
+// ============================================================================
+// Exemplo 4: Materialized Views (Views Materializadas)
+// Tópico: Monitorar e Otimizar
+// Seção do Exame: 3 (Monitorar e Otimizar)
+// Complexidade: Avançado
+// Objetivo: Otimizar agregações pesadas em grandes volumes de dados
+// ============================================================================
+
+// CENÁRIO:
+// Tabela 'Telemetry' com bilhões de registros.
+// Dashboard precisa mostrar a "Média de Temperatura por Hora" rapidamente.
+// Rodar o 'summarize' na tabela bruta toda vez é lento e caro.
+
+// 1. Tabela Bruta
+// Telemetry (Timestamp: datetime, DeviceId: string, Value: real)
+
+// ============================================================================
+// 2. CRIAÇÃO DA VIEW MATERIALIZADA
+// ============================================================================
+// Sempre baseada em uma query de agregação (summarize).
+// Armazena apenas o estado agregado final.
+
+.create materialized-view HourlyStats on table Telemetry
+{
+    Telemetry
+    | summarize 
+        AvgTemp = avg(Value),
+        MinTemp = min(Value),
+        MaxTemp = max(Value),
+        EventCount = count()
+      by bin(Timestamp, 1h), DeviceId
+}
+
+// ============================================================================
+// 3. CONSULTANDO A VIEW
+// ============================================================================
+// Você consulta diretamente pelo nome da view.
+
+HourlyStats
+| where Timestamp > ago(24h)
+| project Timestamp, DeviceId, AvgTemp
+
+// ============================================================================
+// 4. FUNÇÃO MÁGICA: materialized_view()
+// ============================================================================
+// Se a view materializada tiver latência (ainda processando dados recentes do log),
+// a função materialized_view() pode combinar a parte materializada com a parte "delta" (ainda na tabela bruta)
+// para dar o resultado mais atualizado possível (com custo um pouco maior).
+
+materialized_view("HourlyStats")
+| where Timestamp > ago(24h)
+
+// ============================================================================
+// PONTOS-CHAVE PARA O EXAME DP-700
+// ============================================================================
+
+/*
+✅ MEMORIZE:
+
+1. CASO DE USO:
+   - Queries de agregação repetitivas em tabelas massivas.
+   - Último valor conhecido (arg_max) dedup.
+
+2. DEDUPLICAÇÃO EFICIENTE:
+   - Padrão comum: Materialized View usando `arg_max(IngestionTime, *) by Id`.
+   - Mantém apenas a versão mais recente de cada registro ID.
+   - Muito mais eficiente que fazer `summarize arg_max` na tabela bruta cheia de duplicatas.
+
+3. BACKFILL:
+   - `backfill=true`: Na criação, processa dados históricos existentes na tabela source.
+   - `backfill=false`: Só processa dados novos ingeridos APÓS a criação.
+*/

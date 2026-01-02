@@ -1,0 +1,64 @@
+// ============================================================================
+// Exemplo 2: Ingestion Mappings (Mapeamento de Ingestão)
+// Tópico: Real-Time Intelligence
+// Seção do Exame: 2 (Ingerir e Transformar)
+// Complexidade: Intermediário
+// Objetivo: Mapear dados JSON/CSV brutos para colunas da tabela KQL
+// ============================================================================
+
+// CENÁRIO:
+// Recebemos JSON no formato: {"id": 123, "ts": "2024-01-01T10:00:00", "payload": {"temp": 25.5, "loc": "Factory1"}}
+// Queremos mapear para uma tabela plana: DeviceID, Timestamp, Temperature, Location.
+
+// 1. Criação da Tabela
+.create table IotEvents (
+    DeviceID: int,
+    Timestamp: datetime,
+    Temperature: real,
+    Location: string
+)
+
+// ============================================================================
+// 2. CRIAÇÃO DO INGESTION MAPPING (JSON)
+// ============================================================================
+// A sintaxe define o mapeamento entre o campo JSON (Source) e a coluna (Target).
+
+.create table IotEvents ingestion json mapping "IotEventsMapping"
+'['
+'    {"column":"DeviceID", "path":"$.id", "datatype":"int"},'
+'    {"column":"Timestamp", "path":"$.ts", "datatype":"datetime"},'
+'    {"column":"Temperature", "path":"$.payload.temp", "datatype":"real"},'
+'    {"column":"Location", "path":"$.payload.loc", "datatype":"string"}'
+']'
+
+// ============================================================================
+// 3. INGESTÃO USANDO O MAPPING
+// ============================================================================
+// Ao ingerir (seja via Eventstream, Pipeline ou comando .ingest), referenciamos o mapping de pré-ingestão.
+
+// Exemplo de ingestão inline (simulada)
+.ingest inline into table IotEvents with (format="json", ingestionMappingReference="IotEventsMapping") <|
+{"id": 1, "ts": "2024-01-01T12:00:00", "payload": {"temp": 22.5, "loc": "RoomA"}}
+{"id": 2, "ts": "2024-01-01T12:01:00", "payload": {"temp": 23.0, "loc": "RoomB"}}
+
+// ============================================================================
+// PONTOS-CHAVE PARA O EXAME DP-700
+// ============================================================================
+
+/*
+✅ MEMORIZE:
+
+1. FORMATOS:
+   - Suporta JSON, CSV, AVRO, PARQUET, ORC.
+   - Cada formato deve ter o seu mapping específico.
+     Ex: 'ingestion csv mapping' vs 'ingestion json mapping'.
+
+2. TRANSFORMAÇÃO NENHUMA vs LEVE:
+   - Mapping apenas EXTRAI campos e CONVERTE tipos básicos.
+   - NÃO faz cálculos ou joins complexos (para isso use Update Policy).
+
+3. ERROS COMUNS:
+   - Path JSON errado (case sensitive).
+   - Tipo de dados incompatível (tentar mapear string "abc" para coluna int).
+   - Esquecer de referenciar o `ingestionMappingReference` no comando de ingestão.
+*/

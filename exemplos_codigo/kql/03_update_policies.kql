@@ -1,0 +1,83 @@
+// ============================================================================
+// Exemplo 3: Update Policies (Políticas de Atualização)
+// Tópico: Real-Time Intelligence
+// Seção do Exame: 2 (Ingerir e Transformar)
+// Complexidade: Avançado
+// Objetivo: Transformar dados automaticamente durante a ingestão (ETL em tempo real)
+// ============================================================================
+
+// CENÁRIO:
+// Temos uma tabela 'RawEvents' recebendo dados brutos (JSON string).
+// Queremos extrair campos, filtrar erros e salvar na tabela 'ProcessedEvents' AUTOMATICAMENTE.
+
+// 1. Tabela Origem (Raw)
+.create table RawEvents (RawData: dynamic)
+
+// 2. Tabela Destino (Processed)
+.create table ProcessedEvents (
+    EventId: string,
+    Timestamp: datetime,
+    Value: real,
+    Status: string
+)
+
+// ============================================================================
+// 3. FUNÇÃO DE TRANSFORMAÇÃO
+// ============================================================================
+// A lógica do ETL fica encapsulada numa Function KQL.
+// A função deve retornar o schema exato da tabela destino.
+
+.create-or-alter function ExtractEvents() {
+    RawEvents
+    | extend 
+        EventId = tostring(RawData.id),
+        Timestamp = todatetime(RawData.ts),
+        Value = toreal(RawData.val),
+        Status = tostring(RawData.status)
+    | where Value > 0 // Filtragem: descartar valores negativos ou zero
+    | project EventId, Timestamp, Value, Status // Projeção final
+}
+
+// ============================================================================
+// 4. APLICANDO A UPDATE POLICY
+// ============================================================================
+// Vincula a tabela destino à tabela origem através da função.
+
+.alter table ProcessedEvents policy update
+@'[{"Source": "RawEvents", "Query": "ExtractEvents()", "IsEnabled": "True", "IsTransactional": true}]'
+
+// ============================================================================
+// 5. TESTANDO (INGESTÃO)
+// ============================================================================
+
+// Inserindo na tabela RAW
+.ingest inline into table RawEvents <|
+{"id": "A1", "ts": "2024-01-01T10:00:00", "val": 100.5, "status": "OK"}
+{"id": "A2", "ts": "2024-01-01T10:05:00", "val": -5.0, "status": "ERROR"}
+
+// Verificando a tabela PROCESSED
+// Deveria ter apenas o evento A1 (A2 foi filtrado na cláusula where Value > 0)
+// ProcessedEvents  | count
+
+// ============================================================================
+// PONTOS-CHAVE PARA O EXAME DP-700
+// ============================================================================
+
+/*
+✅ MEMORIZE:
+
+1. FLUXO DE DADOS:
+   - Ingestão -> Tabela Source -> Update Policy (trigger) -> Function (query) -> Tabela Target.
+   - O dado na Source PERMANECE (a menos que use retention policy curta, ex: 1 dia ou 0 soft-delete).
+
+2. TRANSACIONALIDADE:
+   - `IsTransactional: true`: Se a transformação falhar, a ingestão na Source TAMBÉM falha (garante consistência Source=Target).
+   - `IsTransactional: false`: Ingestão na Source ocorre mesmo se a transformação falhar (pode gerar mismatch).
+
+3. RETENTION ZERO (Padrão para Source):
+   - Comum configurar `SortDeletePeriod = 0` na tabela RawEvents se você só quer usá-la como pass-through para processamento, sem armazenar o bruto.
+
+4. CUSTO:
+   - Update Policies consomem CPU/Memória do cluster KQL.
+   - Muito complexo? Considere Spark Streaming. Simples/Médio? KQL Update Policy é excelente (latência < 1s).
+*/

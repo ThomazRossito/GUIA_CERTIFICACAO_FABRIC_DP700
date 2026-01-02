@@ -1,0 +1,103 @@
+_// Exemplo de Script KQL para Análise de Dados de Streaming em um KQL Database (Eventhouse)
+
+// Cenário: Analisar dados de telemetria de sensores de IoT (ex: bicicletas de aluguel) que estão sendo
+// ingeridos em tempo real em uma tabela chamada 'BikeTelemetry'.
+
+// Etapa 1: Explorar os dados brutos
+// A tabela 'BikeTelemetry' recebe os dados de um Eventstream.
+
+// Ver as 100 linhas mais recentes para entender o esquema
+BikeTelemetry
+| take 100
+
+/*
+Esquema esperado da tabela BikeTelemetry:
+- Timestamp: datetime
+- BikeId: string
+- Speed: real
+- Latitude: real
+- Longitude: real
+- Status: string (ex: "Available", "InUse", "Maintenance")
+*/
+
+// Etapa 2: Análise em Janela de Tempo (Tumbling Window)
+// Contar o número de eventos (viagens iniciadas) a cada 5 minutos.
+
+BikeTelemetry
+| where Status == "InUse"
+| summarize event_count = count() by bin(Timestamp, 5m)
+| render timechart
+
+// Etapa 3: Enriquecer Dados com Junção (Join)
+// Suponha que temos uma tabela de dimensão 'BikeDetails' com informações sobre cada bicicleta.
+
+// Tabela de dimensão (poderia ser carregada de um arquivo no OneLake)
+let BikeDetails = datatable(BikeId:string, Model:string, Year:int)[
+    "bike-001", "Mountain", 2024,
+    "bike-002", "Road", 2025,
+    "bike-003", "Electric", 2025
+];
+
+BikeTelemetry
+| where Speed > 30 // Encontrar bicicletas que estão se movendo rapidamente
+| lookup kind=leftouter BikeDetails on BikeId
+| project Timestamp, BikeId, Model, Speed, Status
+| take 50
+
+
+// Etapa 4: Detecção de Anomalias Simples
+// Encontrar bicicletas que reportaram um status de "InUse" mas não se moveram (velocidade zero) por mais de 10 minutos.
+
+BikeTelemetry
+| where Status == "InUse" and Speed == 0
+| summarize count() by BikeId, bin(Timestamp, 10m)
+| where count_ > 1 // Mais de uma leitura com velocidade zero na mesma janela de 10min
+| project BikeId
+
+
+// Etapa 5: Criar uma Função para Reutilizar a Lógica
+// Criar uma função que retorna as bicicletas com velocidade acima de um determinado limite.
+
+.create-or-alter function GetFastBikes (speed_limit:real) {
+    BikeTelemetry
+    | where Speed > speed_limit
+    | project Timestamp, BikeId, Speed
+}
+
+// Chamar a função
+GetFastBikes(40)
+| take 100
+
+
+// Etapa 6: Política de Atualização (Update Policy) para Transformação Automática
+// Criar uma tabela limpa e agregada (BikeActivitySummary) que será populada automaticamente
+// a partir da tabela bruta (BikeTelemetry) sempre que novos dados chegarem.
+
+// 6.1. Criar a tabela de destino
+.create-or-alter table BikeActivitySummary (Timestamp:datetime, BikeId:string, AvgSpeed:real, EventCount:long)
+
+// 6.2. Criar a função que faz a transformação
+.create-or-alter function TransformBikeTelemetry() {
+    BikeTelemetry
+    | summarize EventCount = count(), AvgSpeed = avg(Speed) by bin(Timestamp, 1h), BikeId
+}
+
+// 6.3. Anexar a política de atualização à tabela de destino
+.alter table BikeActivitySummary policy update
+"[
+    {
+        "IsEnabled": true,
+        "Source": "BikeTelemetry",
+        "Query": "TransformBikeTelemetry()",
+        "IsTransactional": false,
+        "PropagateIngestionProperties": false
+    }
+]"
+
+// Agora, sempre que dados forem ingeridos na tabela 'BikeTelemetry', a função 'TransformBikeTelemetry'
+// será executada e os resultados serão anexados à tabela 'BikeActivitySummary'.
+
+// Consultar a tabela agregada
+BikeActivitySummary
+| order by Timestamp desc
+| take 100
