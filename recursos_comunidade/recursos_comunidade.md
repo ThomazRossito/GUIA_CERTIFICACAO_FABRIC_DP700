@@ -10,6 +10,7 @@ Vídeos são uma excelente forma de aprender conceitos complexos de forma visual
 
 | Canal/Autor | Descrição | Link |
 | --- | --- | --- |
+| **Sidney Cirqueira** | Domine o Microsoft Fabric e  Transforme Sua Carreira em Data & Analytics! | [Dominando Microsoft Fabric](https://dominandomicrosoftfabric.com.br/) |
 | **Aleksi (11 horas)** | Um dos cursos mais completos e populares para a DP-700, cobrindo todos os tópicos do exame em um único vídeo. | [DP-700 Full Course - Aleksi](https://www.youtube.com/watch?v=jTDSP7KBavI) |
 | **Pragmatic Works (6 horas)** | Curso completo de 6 horas focado na preparação para a certificação. | [DP-700 Full Course - Pragmatic Works](https://www.youtube.com/watch?v=KiB4eAeFRsw) |
 | **Will - Playlist DP-700** | Uma playlist organizada com vídeos sobre cada tópico do exame. | [Playlist DP-700 - Will](https://www.youtube.com/watch?v=XECqSfKmtCk&list=PLug2zSFKZmV2Ue5udYFeKnyf1Jj0-y5Gy) |

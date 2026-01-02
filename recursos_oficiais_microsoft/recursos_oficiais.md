@@ -212,22 +212,3 @@ Esta seção compila os **recursos de estudo oficiais da Microsoft**, organizado
 4. Agendar exame
 
 ---
-
-## ✅ Checklist de Preparação
-
-- [ ] Ler Guia de Estudo Oficial completo
-- [ ] Completar todos os 6 Learning Paths
-- [ ] Fazer todos os tutoriais end-to-end
-- [ ] Praticar com GitHub samples
-- [ ] Completar Practice Assessment (>80%)
-- [ ] Fazer simulados deste guia (>85%)
-- [ ] Revisar documentação de segurança
-- [ ] Revisar otimização e monitoring
-- [ ] Entender Capacity management
-- [ ] Agendar exame com confiança
-
----
-
-**Última Atualização**: Janeiro 2026  
-**Próxima Revisão**: Após atualização do exame (26/01/2026)
-

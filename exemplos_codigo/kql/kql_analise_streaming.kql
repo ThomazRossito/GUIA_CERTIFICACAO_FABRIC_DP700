@@ -1,4 +1,4 @@
-_// Exemplo de Script KQL para Análise de Dados de Streaming em um KQL Database (Eventhouse)
+// Exemplo de Script KQL para Análise de Dados de Streaming em um KQL Database (Eventhouse)
 
 // Cenário: Analisar dados de telemetria de sensores de IoT (ex: bicicletas de aluguel) que estão sendo
 // ingeridos em tempo real em uma tabela chamada 'BikeTelemetry'.
