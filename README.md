@@ -127,5 +127,5 @@ Não vá para a prova sem testar seus conhecimentos. Diferente de dumps comuns, 
 
 ---
 
-**Desenvolvido para a Comunidade de Dados.**
-*Bons estudos e boa sorte na certificação DP-700!* 🚀
+### **Desenvolvido para a Comunidade de Dados.**            
+### *Bons estudos e boa sorte na certificação DP-700!* 🚀
