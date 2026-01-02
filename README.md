@@ -101,23 +101,28 @@ Não vá para a prova sem testar seus conhecimentos. Diferente de dumps comuns, 
 
 ## 👨‍💻 **Desenvolvido com Antigravity AI | Janeiro 2026** 👨‍💻
 
-> **Estruturado por:** <span style="font-size: 1.5em;">Thomaz Antonio Rossito Neto</span>
+### Estruturado por: 
+## Thomaz Antonio Rossito Neto
 
-<b><span style="font-size: 1.2em; font-style: italic;">🏆 Profissional Certificado Databricks e Microsoft</span></b>
-
-
-<div style="display: flex; flex-direction: column; align-items: flex-start;">
-  <div style="margin-bottom: 10px; margin-left: -14px;">
-    <img src="https://api.accredible.com/v1/frontend/credential_website_embed_image/badge/125134719" width="135" style="margin-right: -30px;"/><img src="https://api.accredible.com/v1/frontend/credential_website_embed_image/badge/167127257" width="135" style="margin-right: -30px;"/><img src="https://api.accredible.com/v1/frontend/credential_website_embed_image/badge/169321258" width="135" style="margin-right: -30px;"/><img src="https://api.accredible.com/v1/frontend/credential_website_embed_image/badge/125134780" width="135" style="margin-right: -30px;"/><img src="https://api.accredible.com/v1/frontend/credential_website_embed_image/badge/157011932" width="135"/>
-  </div>
-  
-  <div style="margin-left: 0px;">
-    <img src="https://images.credly.com/images/af27ef78-6967-4082-b6ce-8111b1af47e1/MTA_Database_Fundamentals-01.png" width="115" style="margin-right: 5px;"/><img src="https://images.credly.com/size/340x340/images/70eb1e3f-d4de-4377-a062-b20fb29594ea/azure-data-fundamentals-600x600.png" width="115" style="margin-right: 5px;"/><img src="https://images.credly.com/images/bb4a3c26-9f24-4913-9ae5-7331a3d657a6/MCSA-Data-Engineering-with-Azure_2019.png" width="115" style="margin-right: 5px;"/><img src="https://images.credly.com/images/7e080b6a-0494-4b3e-a016-23f73566495f/MCSE-Data-Management-and-Analytics_2019.png" width="115"/>
-  </div>
-</div>
+### ***🏆 Profissional Certificado Databricks e Microsoft***
 
 
-[Certificações Databricks](https://credentials.databricks.com/profile/thomazantoniorossitoneto39867/wallet)
+<table border="0">
+  <tr>
+    <td align="left" border="0">
+      <img src="https://api.accredible.com/v1/frontend/credential_website_embed_image/badge/125134719" width="135" />&nbsp;<img src="https://api.accredible.com/v1/frontend/credential_website_embed_image/badge/167127257" width="135" />&nbsp;<img src="https://api.accredible.com/v1/frontend/credential_website_embed_image/badge/169321258" width="135" />&nbsp;<img src="https://api.accredible.com/v1/frontend/credential_website_embed_image/badge/125134780" width="135" />&nbsp;<img src="https://api.accredible.com/v1/frontend/credential_website_embed_image/badge/157011932" width="135" />
+    </td>
+  </tr>
+  <tr>
+    <td align="left" border="0">
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://images.credly.com/images/af27ef78-6967-4082-b6ce-8111b1af47e1/MTA_Database_Fundamentals-01.png" width="115" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://images.credly.com/size/340x340/images/70eb1e3f-d4de-4377-a062-b20fb29594ea/azure-data-fundamentals-600x600.png" width="115" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://images.credly.com/images/bb4a3c26-9f24-4913-9ae5-7331a3d657a6/MCSA-Data-Engineering-with-Azure_2019.png" width="115" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://images.credly.com/images/7e080b6a-0494-4b3e-a016-23f73566495f/MCSE-Data-Management-and-Analytics_2019.png" width="115" />
+    </td>
+  </tr>
+</table>
+
+
+
+[Certificações Databricks](https://credentials.databricks.com/profile/thomazantoniorossitoneto39867/wallet)                   
 [Certificações Microsoft](https://www.credly.com/users/thomaz-antonio-rossito-neto/badges#credly)
 
 ---
