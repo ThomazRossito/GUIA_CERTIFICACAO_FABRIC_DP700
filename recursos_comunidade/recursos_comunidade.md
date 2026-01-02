@@ -57,4 +57,3 @@ Participar de comunidades é uma ótima forma de tirar dúvidas, compartilhar co
 | **Microsoft Fabric Community** | Fórum oficial da Microsoft para discussões sobre o Fabric. | [Fabric Community](https://community.fabric.microsoft.com/) |
 | **Reddit - r/MicrosoftFabric** | Subreddit ativo com discussões sobre Fabric e certificações. | [Reddit Microsoft Fabric](https://www.reddit.com/r/MicrosoftFabric/) |
 | **LinkedIn Groups** | Vários grupos no LinkedIn focados em Microsoft Fabric e Data Engineering. | Pesquise por "Microsoft Fabric" no LinkedIn |
-_
